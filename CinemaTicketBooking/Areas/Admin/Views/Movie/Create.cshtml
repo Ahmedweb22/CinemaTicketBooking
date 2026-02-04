@@ -1,0 +1,80 @@
+﻿@model MovieCreateVM
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-md-6">
+            <h3 class="display-6">Create new Movie</h3>
+        </div>
+    </div>
+
+    <div class="row my-3">
+        <div class="col-12">
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="Name" class="form-label">Name</label>
+                    <input class="form-control"  placeholder="Enter movie name" asp-for="Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Description" class="form-label">Description</label>
+                    <textarea class="form-control" placeholder="Description"rows="5" asp-for="Description"></textarea>
+					<span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Img" class="form-label">Main Img</label>
+                    <input type="file" class="form-control" placeholder="Enter product Img" asp-for="MainImg">
+				
+                </div>
+                <div class="mb-3">
+                    <label for="SubImgs" class="form-label">Sub Imgs</label>
+                    <input type="file" class="form-control" placeholder="Enter product Img" name="subImgs" multiple>
+					
+                </div>
+                <div class="mb-3">
+                    <label for="Price" class="form-label">Price</label>
+                    <input class="form-control"  placeholder="Enter product price" asp-for="Price">
+				
+                </div>
+                <div class="mb-3">
+                    <label for="Date" class="form-label">Date</label>
+                    <input asp-for="Date" type="datetime-local" class="form-control" />
+
+
+                </div>
+                <div class="col-md-3">
+                    <label for="Category" class="form-label">Category</label>
+                    <select asp-for ="CategoryId" class="form-select">
+						<option value="">-- Select Category --</option>
+                        @foreach (var category in Model.Categories)
+                        {
+
+                            <option value="@category.Id">@category.Name</option>
+
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="Cinema" class="form-label">Cinema</label>
+                    <select asp-for ="CinemaId" class="form-select">
+						<option value="">-- Select Cinema --</option>
+                        @foreach (var cinema in Model.Cinemas)
+                        {
+                            <option value="@cinema.Id">@cinema.Name</option>
+
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="Status" class="form-label">Status</label>
+                    <select name="Movies.Status" class="form-select" id="Status">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}

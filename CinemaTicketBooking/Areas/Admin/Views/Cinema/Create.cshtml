@@ -1,0 +1,36 @@
+﻿@model Cinema
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-md-6">
+            <h3 class="display-6">Create new Cinema</h3>
+        </div>
+    </div>
+
+    <div class="row my-3">
+        <div class="col-12">
+            <form method="post">
+                <div class="mb-3">
+                    <label for=Name" class="form-label">Name</label>
+                    <input class="form-control" placeholder="Enter cinema name" asp-for="Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Img" class="form-label">Poster</label>
+                    <input type="file" class="form-control" placeholder="Enter cinema poster" asp-for="Img">
+                    <span asp-validation-for="Img" class="text-danger"></span>
+                </div>
+                <div clas="mb-3">
+                    <label for="Status" class="form-label">Status</label>
+                    <select class="form-select" asp-for="Status">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial.cshtml" />

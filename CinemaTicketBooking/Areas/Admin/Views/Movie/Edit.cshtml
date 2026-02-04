@@ -1,0 +1,128 @@
+﻿@model MovieUpdateResponseVM
+<div class="container">
+	<div class="row mb-3 align-items-center my-3">
+		<div class="col-md-6">
+			<h3 class="display-6">Update Movie</h3>
+		</div>
+	</div>
+
+	<div class="row my-3">
+		<div class="col-12">
+			<form method="post" enctype="multipart/form-data">
+				<div class="mb-3">
+					<label for="Name" class="form-label">Name</label>
+					<input class="form-control" placeholder="Enter movie name"  asp-for="Movies.Name">
+					<span asp-validation-for="Movies.Name" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label for="Description" class="form-label">Description</label>
+					<textarea class="form-control" placeholder="Description" rows="5" asp-for="Movies.Description">@Model.Movies.Description</textarea>
+					<span asp-validation-for="Movies.Description" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label for="Img" class="form-label">Main Img</label>
+					<input type="file" class="form-control"  placeholder="Enter movie Img"  asp-for="Movies.MainImg" onchange="previewImage(event)">
+					<span asp-validation-for="Movies.MainImg" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label for="Date" class="form-label">Date</label>
+					<input asp-for="Movies.Date" type="datetime-local" class="form-control" />
+
+					<span asp-validation-for="Movies.MainImg" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<img id="preview"
+						 src="~/img/product_images/@Model.Movies.MainImg" alt="Current Image" class="img-thumbnail" />
+				</div>
+				<div class="mb-3">
+					<label for="SubImgs" class="form-label">Sub Imgs</label>
+					<input type="file" class="form-control"  placeholder="Enter product Img"asp-for="SubImgs" multiple>
+					<span asp-validation-for="SubImgs" class="text-danger"></span>
+				</div>
+				@foreach (var img in Model.SubImgs)
+				{
+					<div class="mb-3">
+						<img id="preview"
+							 src="~/img/product_images/sub_images/@img.SubImgs" alt="Current Image" class="img-thumbnail" />
+						<a href="/Admin/Movie/DeleteImg/@img.MovieId?movieImgId=@img.Id" class="btn btn-danger">Delete</a>
+					</div>
+				}
+
+				<div class="mb-3">
+					<label for="Price" class="form-label">Price</label>
+					<input class="form-control" placeholder="Enter Movie price" name="price" asp-for="Movies.Price">
+				</div>
+				<div class="col-md-3">
+					<label for="Category" class="form-label">Category</label>
+					<select name="CategoryId" class="form-select">
+						<option value="">All Categories</option>
+						@foreach (var category in Model.Categories)
+						{
+							@if (category.Id == Model.Movies.CategoryId)
+							{
+								<option value="@category.Id" selected>@category.Name</option>
+							}
+							else
+							{
+								<option value="@category.Id">@category.Name</option>
+							}
+
+
+						}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label for="Cinema" class="form-label">Cinema</label>
+					<select name="CinemaId" class="form-select">
+						<option value="">All Cinemas</option>
+						@foreach (var cinema in Model.Cinemas)
+						{
+							@if (cinema.Id == Model.Movies.CinemaId)
+							{
+								<option value="@cinema.Id" selected>@cinema.Name</option>
+							}
+							else
+							{
+								<option value="@cinema.Id">@cinema.Name</option>
+							}
+
+
+						}
+					</select>
+				</div>
+				<div class="mb-3">
+					<label for="Status" class="form-label">Status</label>
+					<select name="status" class="form-select" id="Status">
+						@if (Model.Movies.Status)
+						{
+							<option value="true" selected>Active</option>
+							<option value="false">Inactive</option>
+						}
+						else
+						{
+							<option value="true">Active</option>
+							<option value="false" selected>Inactive</option>
+						}
+
+					</select>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	function previewImage(event) {
+	const input = event.target;
+	const preview = document.getElementById('preview');
+	if (input.files && input.files[0]) {
+		const reader = new FileReader();
+		reader.onload = function(e) {
+			preview.src = e.target.result;
+		}
+		reader.readAsDataURL(input.files[0]);
+	}
+</script>
+@section Scripts {
+	<partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}
