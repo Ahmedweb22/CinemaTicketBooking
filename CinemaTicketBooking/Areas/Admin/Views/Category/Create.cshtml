@@ -19,6 +19,7 @@
                     <textarea class="form-control" placeholder="Description" rows="5" asp-for="Description"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
+               
                 <div clas="mb-3">
                     <label for="Status" class="form-label">Status</label>
                     <select class="form-select" asp-for="Status">
@@ -32,4 +33,6 @@
         </div>
     </div>
 </div>
-<partial name="_ValidationScriptsPartial.cshtml" />
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}

@@ -34,6 +34,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Cinema cinema, IFormFile poster)
         {
+            ModelState.Remove("Poster");
             if (!ModelState.IsValid)
                 return View(cinema);
             if (poster is not null && poster.Length > 0)
@@ -54,6 +55,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Edit([FromRoute] int id)
         {
+           
             var cinema = _context.Cinemas.Find(id);
             if (cinema is null)
                 return NotFound();
@@ -62,6 +64,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(Cinema cinema, IFormFile? poster)
         {
+            ModelState.Remove("Img");
             if (!ModelState.IsValid)
                 return View(cinema);
             Cinema? existingCinema = _context.Cinemas.AsNoTracking().FirstOrDefault(b => b.Id == cinema.Id);

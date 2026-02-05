@@ -60,4 +60,6 @@
 		reader.readAsDataURL(input.files[0]);
     }
 </script>
-<partial name="_ValidationScriptsPartial.cshtml" />
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}

@@ -35,13 +35,21 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new Actors());
+            var movies = _context.Movies.AsNoTracking().AsQueryable();
+            return View(new ActorsCreateVM
+            {
+                Movies = movies.AsEnumerable()
+            });
         }
         [HttpPost]
-        public IActionResult Create(Actors actor, IFormFile img)
+        public IActionResult Create(ActorsCreateVM actor, IFormFile img)
         {
+            ModelState.Remove("Movie");
             if (!ModelState.IsValid)
+            {
+                actor.Movies = _context.Movies.AsNoTracking().AsQueryable();
                 return View(actor);
+            }
             if (img is not null && img.Length > 0)
             {
                 var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(img.FileName);
@@ -52,8 +60,14 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                 }
                 actor.Img = newFileName;
             }
-
-            _context.Actors.Add(actor);
+            var actors = new Actors
+            {
+                Name = actor.Name,
+                Description = actor.Description,
+                MovieId = actor.MovieId,
+                Img = actor.Img
+            };
+            _context.Actors.Add(actors);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
@@ -68,6 +82,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(Actors actor, IFormFile? img)
         {
+            ModelState.Remove("Movie");
             if (!ModelState.IsValid)
                 return View(actor);
             Actors? existingActor = _context.Actors.AsNoTracking().FirstOrDefault(b => b.Id == actor.Id);

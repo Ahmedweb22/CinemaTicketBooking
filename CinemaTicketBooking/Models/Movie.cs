@@ -17,11 +17,11 @@
         public DateTime? Date { get; set; }
         public bool Status { get; set; }
         public string MainImg { get; set; } = string.Empty;
-        public List<Actors>? Actors { get; set; } = new List<Actors>();
-        public int? CategoryId { get; set; }
+        public List<Actors> Actors { get; set; } = new List<Actors>();
+        public int CategoryId { get; set; }
         
         public Category Category { get; set; }
-        public int? CinemaId { get; set; }
+        public int CinemaId { get; set; }
   
         public Cinema Cinema { get; set; }
 

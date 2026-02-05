@@ -1,4 +1,4 @@
-﻿@model Actors
+﻿@model ActorsCreateVM
 <div class="container">
     <div class="row mb-3 align-items-center my-3">
         <div class="col-md-6">
@@ -8,7 +8,8 @@
 
     <div class="row my-3">
         <div class="col-12">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
+                <i<input type="hidden" asp-for="Id" />
                 <div class="mb-3">
                     <label for=Name" class="form-label">Name</label>
                     <input class="form-control" placeholder="Enter actor name" asp-for="Name">
@@ -19,6 +20,16 @@
                     <textarea class="form-control" placeholder="Description" rows="5" asp-for="Description"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
+                 <div class="mb-3">
+                    <label for="MovieId" class="form-label">Movie</label>
+                    <select class="form-select" asp-for="MovieId">
+                        <option value="">-- Select Movie --</option>
+                        @foreach (var movie in Model.Movies)
+                        {
+                            <option value="@movie.Id">@movie.Name</option>
+						}
+                        </select>
+                    </div>
                 <div class="mb-3">
                     <label for="Img" class="form-label">Image</label>
                     <input type="file" class="form-control" placeholder="Enter actor image" asp-for="Img">
@@ -30,4 +41,6 @@
     </div>
 </div>
 
-<partial name="_ValidationScriptsPartial.cshtml" />
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}

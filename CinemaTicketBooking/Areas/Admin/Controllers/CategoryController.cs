@@ -34,6 +34,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
+            ModelState.Remove("Movies");
             if (!ModelState.IsValid)
                 return View(category);
             _context.Categories.Add(category);
@@ -51,7 +52,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(Category category)
         {
-
+            ModelState.Remove("Movies");
             if (!ModelState.IsValid)
                 return View(category);
             _context.Categories.Update(category);
