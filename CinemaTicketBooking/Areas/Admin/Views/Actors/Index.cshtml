@@ -90,7 +90,7 @@
                     @if (Model.CurrentPage > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="/Admin/Actor/Index?page=@(Model.CurrentPage - 1)">Previous</a>
+                            <a class="page-link" href="/Admin/Actors/Index?page=@(Model.CurrentPage - 1)">Previous</a>
                         </li>
                     }
                     @for (int i = 1; i <= Model.TotalPages; i++)
@@ -98,20 +98,20 @@
                         if (i == Model.CurrentPage)
                         {
                             <li class="page-item active">
-                                <a class="page-link" href="/Admin/Actor/Index?page=@i">@i</a>
+                                <a class="page-link" href="/Admin/Actors/Index?page=@i">@i</a>
                             </li>
                         }
                         else
                         {
                             <li class="page-item">
-                                <a class="page-link" href="~/Admin/Actor/Index?page=@i">@i</a>
+                                <a class="page-link" href="~/Admin/Actors/Index?page=@i">@i</a>
                             </li>
                         }
                     }
                     @if (Model.CurrentPage < Model.TotalPages)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="/Admin/Actor/Index?page=@(Model.CurrentPage + 1)">Next</a>
+                            <a class="page-link" href="/Admin/Actors/Index?page=@(Model.CurrentPage + 1)">Next</a>
                         </li>
                     }
 

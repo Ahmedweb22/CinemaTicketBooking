@@ -191,7 +191,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                 Description = movie.Description,
                 Price = movie.Price,
                 Date = movie.Date,
-                MainImg = movie.MainImg ,
+                MainImg = movie.MainImg,
                 Status = movie.Status,
                 CategoryId = movie.CategoryId,
                 CinemaId = movie.CinemaId

@@ -67,7 +67,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             ModelState.Remove("Img");
             if (!ModelState.IsValid)
                 return View(cinema);
-            Cinema? existingCinema = _context.Cinemas.AsNoTracking().FirstOrDefault(b => b.Id == cinema.Id);
+            var existingCinema = _context.Cinemas.AsNoTracking().FirstOrDefault(b => b.Id == cinema.Id);
             if (existingCinema is null)
                 return NotFound();
             if (poster is not null && poster.Length > 0)

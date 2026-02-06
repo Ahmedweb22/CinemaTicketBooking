@@ -9,7 +9,9 @@
         [Required]
         [Length(3, 500)]
         public string Description { get; set; } = string.Empty;
-        public string Img { get; set; } = string.Empty;
+        [Required]
+        public string Img { get; set; } = null!;
+        [Required]
         public int MovieId { get; set; }
 
         public Movie Movie { get; set; } 

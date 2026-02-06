@@ -1,102 +1,18 @@
-﻿USE CinemaTicketBooking;
-insert into Actors ( Name, Description, Img, MovieId) values ('Nelson Rutley', 'Malposition NEC-deliver', 'JustoLaciniaEget.ppt', 40);
-insert into Actors ( Name, Description, Img, MovieId) values ('Mariejeanne Hastwell', 'Mult myelm w remission', 'AtFeugiatNon.gif', 12);
-insert into Actors ( Name, Description, Img, MovieId) values ('Joelly O''Heagertie', 'Alcoh dep NEC/NOS-episod', 'At.avi', 11);
-insert into Actors ( Name, Description, Img, MovieId) values ('Padgett Spraging', 'Disc dis NEC/NOS-thorac', 'Nulla.ppt', 9);
-insert into Actors ( Name, Description, Img, MovieId) values ('Robbin St Clair', 'Lung injury NOS-open', 'NislNuncNisl.mp3', 5);
-insert into Actors ( Name, Description, Img, MovieId) values ('Ted Gladbeck', 'Fitting artificial arm', 'At.ppt', 26);
-insert into Actors ( Name, Description, Img, MovieId) values ('Northrop Litchfield', 'Vulvar ulcer in oth dis', 'DiamCras.jpeg', 37);
-insert into Actors ( Name, Description, Img, MovieId) values ('Lew Ezzle', 'Hemangioma intra-abdom', 'AnteIpsum.avi', 20);
-insert into Actors ( Name, Description, Img, MovieId) values ('Linnie Diable', 'Psychosexual dysfunc NOS', 'MiInPorttitor.mp3', 45);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ariana Sunnex', 'Cervical agenesis', 'Faucibus.jpeg', 12);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Deana Brinsford', 'Burn NOS lip', 'DuiMaecenas.doc', 69);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Brody Dubble', 'Mat anesth/analg aff NB', 'Ac.avi', 8);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Mady Lythgoe', 'Late eff CV-dysarthria', 'NisiNam.xls', 14);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Codi Scrannage', 'Renal artery hyperplasia', 'Lectus.jpeg', 3);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Jaime Whewell', '2nd deg burn breast', 'UltricesPosuere.tiff', 2);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Patrice Lanaway', 'Other sequelae of MI NEC', 'ConsequatMetus.ppt', 69);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ricky Bennetto', 'Pressure ulcer, low back', 'QuamAOdio.xls', 49);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Tammie Jendrassik', 'Benign neo pelvic girdle', 'Odio.jpeg', 54);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Guenna Arnold', 'Exfl d/t eryth 30-39 bdy', 'InImperdietEt.jpeg', 37);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Tommy Wingham', 'Jaw disease NEC', 'In.avi', 31);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Karon Surgener', 'Oth prblms rltd lfstyle', 'Non.jpeg', 21);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Vernon Hargrove', 'Cerebel lacerat-mod coma', 'Vestibulum.tiff', 28);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Bowie MacCarter', 'Ac polio NOS-type NOS', 'NonVelit.tiff', 34);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Cherry Stanfield', 'Opn wnd eustach tb-compl', 'In.ppt', 27);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Tandie Korba', 'TB lung fibrosis-cult dx', 'SedAugue.doc', 19);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Barbi Evetts', 'Vaginismus', 'Amet.ppt', 10);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Karlee Gavriel', 'Great vein anomaly NEC', 'DiamNamTristique.mp3', 37);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ninon Backshell', 'Acc poisn-cns depres NEC', 'NibhQuisque.avi', 43);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Roy Attenborough', 'Boat acc w submers-power', 'Molestie.xls', 43);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Susana Wadman', 'Sprain acromioclavicular', 'RutrumNulla.ppt', 27);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Nelie Ney', 'Open wound of cochlea', 'Porttitor.jpeg', 56);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Rica Devinn', 'Ovarian endometriosis', 'JustoEuMassa.mp3', 28);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ailina Munehay', 'Amebic nondysent colitis', 'MaurisEnim.mpeg', 1);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Arielle Capon', 'TB skin/subcut-micro dx', 'CongueVivamusMetus.jpeg', 4);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ansel McCullough', 'Tachypnea', 'DonecPharetraMagna.mp3', 24);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ginevra Bremmer', 'Somat dys head region', 'Aliquam.gif', 2);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Elie Rebeiro', 'Pericardial disease NOS', 'JustoAliquam.mp3', 16);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Arch Bissex', 'Cerebrovasc disease NEC', 'MaurisLacinia.avi', 20);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Rad Heather', 'Nervous system anom NOS', 'EtMagnisDis.avi', 17);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Bryana Garfoot', 'Amebic nondysent colitis', 'InFaucibus.avi', 46);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Geordie Alp', 'Acc poison-shellfish', 'Orci.avi', 5);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Monti Stobbie', 'Cl skl w oth fx-coma NOS', 'Ridiculus.doc', 37);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Nonah Laste', 'Accident - air gun', 'SedVelEnim.avi', 29);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ferris Ashenhurst', 'Pois-antimycobac antibio', 'Non.mp3', 30);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Tate Mathan', 'Family circumstances NEC', 'OdioDonecVitae.avi', 70);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ruthie Chastey', 'Obj w-w/o sub fall NEC', 'Suspendisse.mp3', 54);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Jud Magarrell', 'Acc poisoning-mercury', 'Ipsum.ppt', 28);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Claribel Bunston', 'Obstruct/fet malpos-unsp', 'Volutpat.ppt', 55);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Eartha Marron', 'Malignant hyperthermia', 'QuamSuspendisse.mov', 46);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Babara Bumpas', 'Suppur otitis media NOS', 'SitAmetConsectetuer.avi', 34);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Merci Sokill', 'Mal neo skn face NEC/NOS', 'SollicitudinVitaeConsectetuer.ppt', 70);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Sosanna Deware', 'Racquet/hand sports', 'Libero.avi', 25);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Kyle Morfell', 'Leg ab w pelv damag-comp', 'Augue.doc', 15);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Joli Fiddiman', 'Bartter''s syndrome', 'MagnisDisParturient.avi', 8);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Dody Camus', 'Ac margin ulc w perf-obs', 'SodalesScelerisque.mp3', 41);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Kellie Gino', 'Immunity deficiency NOS', 'PosuereCubiliaCurae.png', 9);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ewan Salliss', 'Carbuncle of hand', 'LacusMorbi.txt', 68);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ber Caig', 'Heteronymous hemianopsia', 'FaucibusAccumsan.png', 50);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Joellen Yu', 'Prt circmpap choroid dys', 'EstQuamPharetra.avi', 5);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Katusha Cinavas', 'Pois psychostimulant NOS', 'Ut.png', 49);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Gui Brasner', 'Vascular disord of skin', 'Ut.avi', 50);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Raphaela Kiddye', 'Fetal distrs dur lab/del', 'In.xls', 20);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Gerrie Sallier', 'Meconium asp w resp symp', 'LuctusEt.avi', 51);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Nilson Playfair', 'Congen obst urtroplv jnc', 'Vestibulum.png', 8);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Cleopatra Simmonds', 'Lt-date w/mal 1750-1999g', 'Dapibus.mp3', 24);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Maisey Wayland', 'Opn cortx lacer-mod coma', 'PedeMalesuadaIn.xls', 46);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Mervin Fairlie', 'DMII ophth nt st uncntrl', 'DuisAliquam.avi', 27);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Kristofer Moral', 'Gastroptosis', 'MiSitAmet.ppt', 15);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Valida Handling', 'Scr fetl malfrm-ultrasnd', 'Sapien.xls', 30);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Matthew Pickless', '2nd deg burn eye', 'ConvallisDuisConsequat.xls', 19);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Barclay Shemmin', 'Rappelling', 'InFaucibusOrci.xls', 2);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Sher Cripin', 'AMI inferopost, unspec', 'Est.avi', 35);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Meir Dibden', 'Sleep organic disord NEC', 'EratVolutpat.txt', 43);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Benjamen Brittlebank', 'Eosinophilic meningitis', 'UtMassaVolutpat.mp3', 23);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Peter Kellart', 'Neonatal tachycardia', 'NullaNunc.xls', 27);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Nikkie Golborne', 'Resp system disease NOS', 'OdioConsequatVarius.avi', 4);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Yalonda Boylan', 'Spon ab w metab dis-unsp', 'NullaTellusIn.avi', 1);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Carena Abramow', 'Meningococc myocarditis', 'Tincidunt.doc', 56);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Dael Cassy', 'Kwashiorkor', 'VariusUtBlandit.mpeg', 10);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Steffen Greggersen', 'Postphl syn w ulc&inflam', 'AliquamSit.xls', 3);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Berni Stebles', 'Lack of food', 'TinciduntInLeo.jpeg', 44);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Cord Norheny', 'Fx sacrum-op/crd inj NOS', 'ConsequatLectus.mp3', 51);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Hyman Oloshkin', 'Bullous keratopathy', 'Sem.mpeg', 23);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Dania Saull', 'Simple goiter', 'Eu.tiff', 54);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Agneta Turney', 'Musc disuse atrophy NEC', 'Libero.mp3', 21);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Fraser Srawley', 'Insuf interocclusl-teeth', 'Tortor.ppt', 2);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Riley Grigoryov', 'Acquired night blindness', 'Vitae.ppt', 46);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Gaby Millea', 'Gallstone ileus', 'Nulla.ppt', 27);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Juliana Guiver', 'Tubrcloma brain-micro dx', 'Sed.gif', 40);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Rafael Haibel', 'Boat submers-swimmer', 'Rutrum.mpeg', 22);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Moyra Hollyman', 'Cl skl base fx/cereb lac', 'Eu.jpeg', 33);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Nicol Cookman', 'Evans'' syndrome', 'LoremQuisque.mp3', 29);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Ede Algie', 'Spleen disruption-open', 'Primis.avi', 13);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Brandise Dibsdale', 'Myopathy in endocrin dis', 'VivamusMetus.avi', 55);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Wolf Wallbrook', 'Appendicitis NOS', 'QuisTurpis.jpeg', 24);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Kattie McKie', 'Contusion NOS', 'QuamSuspendissePotenti.pdf', 65);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Aloin Filyukov', 'Ac endocardit in oth dis', 'LacusAt.ppt', 22);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Arluene Boxhill', 'Lt eff nerv inj pelv/leg', 'Tortor.mp3', 66);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Livy Gimeno', 'Opn skul fx NEC w/o coma', 'Pellentesque.doc', 12);
-insert into Actors ( Name, Description, Img, MovieId) values ( 'Cate Roser', 'Idiopth lym interst pneu', 'Est.ppt', 43);
-SELECT * FROM Actors;
+﻿SELECT * From Movies
+WHERE CategoryId IS NULL OR CinemaId IS NULL 
+
+UPDATE Movies
+SET CategoryId = 1
+WHERE CategoryId IS NULL
+
+UPDATE Movies
+SET CinemaId = 1
+WHERE CinemaId IS NULL
+
+ALTER TABLE Movies
+ALTER COLUMN CategoryId INT NOT NULL
+
+ALTER TABLE Movies
+ALTER COLUMN CinemaId INT NOT NULL
+
+UPDATE Movies
