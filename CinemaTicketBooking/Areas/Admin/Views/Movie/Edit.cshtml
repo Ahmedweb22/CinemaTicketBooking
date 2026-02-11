@@ -9,57 +9,56 @@
 	<div class="row my-3">
 		<div class="col-12">
 			<form method="Post" enctype="multipart/form-data">
-				<input type="hidden" asp-for="Id" />
+				<input type="hidden" asp-for="Movie.Id" />
 				<div class="mb-3">
 					<label for="Name" class="form-label">Name</label>
-					<input class="form-control" placeholder="Enter movie name"  asp-for="Name">
-					<span asp-validation-for="Name" class="text-danger"></span>
+					<input class="form-control" placeholder="Enter movie name"  asp-for="Movie.Name">
+					<span asp-validation-for="Movie.Name" class="text-danger"></span>
 				</div>
 				<div class="mb-3">
 					<label for="Description" class="form-label">Description</label>
-					<textarea class="form-control" placeholder="Description" rows="5" asp-for="Description">@Model.Description</textarea>
-					<span asp-validation-for="Description" class="text-danger"></span>
+					<textarea class="form-control" placeholder="Description" rows="5" asp-for="Movie.Description">@Model.Movie.Description</textarea>
+					<span asp-validation-for="Movie.Description" class="text-danger"></span>
 				</div>
 				<div class="mb-3">
 					<label for="Img" class="form-label">Main Img</label>
-					<input type="file" class="form-control"  placeholder="Enter movie Img"  asp-for="MainImg" onchange="previewImage(event)"/>
-					<span asp-validation-for="MainImg" class="text-danger"></span>
-				</div>
-				<div class="mb-3">
-					<label for="Date" class="form-label">Date</label>
-					<input asp-for="Date" type="datetime-local" class="form-control" />
-
-					<span asp-validation-for="MainImg" class="text-danger"></span>
+					<input type="file" class="form-control"  placeholder="Enter movie Img"  name="mainImg" onchange="previewImage(event)"/>
 				</div>
 				<div class="mb-3">
 					<img id="preview"
-						 src="~/img/product_images/@Model.MainImg" alt="Current Image" class="img-thumbnail" />
+						 src="~/img/movie_images/@Model.Movie.MainImg" alt="Current Image" class="img-thumbnail" />
 				</div>
 				<div class="mb-3">
+					<label for="Date" class="form-label">Date</label>
+					<input asp-for="Movie.Date" type="datetime-local" class="form-control" />
+
+					<span asp-validation-for="Movie.Date" class="text-danger"></span>
+				</div>
+				
+				<div class="mb-3">
 					<label for="SubImgs" class="form-label">Sub Imgs</label>
-					<input type="file" class="form-control"  placeholder="Enter product Img"asp-for="SubImgs" multiple>
-					<span asp-validation-for="SubImgs" class="text-danger"></span>
+					<input type="file" class="form-control" id="SubImgs" placeholder="Enter product Img" name="SubImgs" multiple>
 				</div>
 				@foreach (var img in Model.SubImgs)
 				{
 					<div class="mb-3">
 						<img id="preview"
-							 src="~/img/product_images/sub_images/@img.SubImgs" alt="Current Image" class="img-thumbnail" />
+							 src="~/img/movie_images/sub_images/@img.SubImgs" alt="Current Image" class="img-thumbnail" />
 						<a href="/Admin/Movie/DeleteImg/@img.MovieId?movieImgId=@img.Id" class="btn btn-danger">Delete</a>
 					</div>
 				}
 
 				<div class="mb-3">
 					<label for="Price" class="form-label">Price</label>
-					<input class="form-control" placeholder="Enter Movie price" name="price" asp-for="Price">
+					<input class="form-control" placeholder="Enter Movie price"  asp-for="Movie.Price">
 				</div>
 				<div class="col-md-3">
 					<label for="Category" class="form-label">Category</label>
-					<select name="CategoryId" class="form-select">
+					<select asp-for="Movie.CategoryId" class="form-select">
 					
 						@foreach (var category in Model.Categories)
 						{
-							@if (category.Id == Model.CategoryId)
+							@if (category.Id == Model.Movie.CategoryId)
 							{
 								<option value="@category.Id" selected>@category.Name</option>
 							}
@@ -74,11 +73,11 @@
 				</div>
 				<div class="col-md-3">
 					<label for="Cinema" class="form-label">Cinema</label>
-					<select name="CinemaId" class="form-select">
+					<select asp-for="Movie.CinemaId" class="form-select">
 				
 						@foreach (var cinema in Model.Cinemas)
 						{
-							@if (cinema.Id == Model.CinemaId)
+							@if (cinema.Id == Model.Movie.CinemaId)
 							{
 								<option value="@cinema.Id" selected>@cinema.Name</option>
 							}
@@ -93,8 +92,8 @@
 				</div>
 				<div class="mb-3">
 					<label for="Status" class="form-label">Status</label>
-					<select name="status" class="form-select" id="Status">
-						@if (Model.Status)
+					<select asp-for="Movie.Status" class="form-select" id="Status">
+						@if (Model.Movie.Status)
 						{
 							<option value="true" selected>Active</option>
 							<option value="false">Inactive</option>

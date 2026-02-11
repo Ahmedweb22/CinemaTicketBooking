@@ -5,19 +5,21 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
     [Area(SD.ADMIN_AREA)]
     public class CinemaController : Controller
     {
-        private ApplicationDbContext _context = new();
-        public IActionResult Index(string? name, int page = 1)
+        //private ApplicationDbContext _context = new();
+                private Repository<Cinema> _cinemaRepository = new();
+        public async Task<IActionResult> Index(string? name, int page = 1)
         {
 
-            var cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+            //var cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+            var cinemas =await _cinemaRepository.GetAsync(tracking:false);
             if (name is not null)
-                cinemas = cinemas.Where(e => e.Name.Contains(name));
+                cinemas = cinemas.Where(e => e.Name.Contains(name)).ToList();
             if (page < 1)
                 page = 1;
             int pageSize = 5;
             int currentPage = page;
             double totalCount = Math.Ceiling(cinemas.Count() / (double)pageSize);
-            cinemas = cinemas.Skip((page - 1) * pageSize).Take(pageSize);
+            cinemas = cinemas.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             return View(new CinemasVM
             {
@@ -32,51 +34,56 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             return View(new Cinema());
         }
         [HttpPost]
-        public IActionResult Create(Cinema cinema, IFormFile poster)
+        public async Task<IActionResult> Create(Cinema cinema, IFormFile img)
         {
-            ModelState.Remove("Poster");
+            ModelState.Remove("Img");
             if (!ModelState.IsValid)
                 return View(cinema);
-            if (poster is not null && poster.Length > 0)
+            if (img is not null && img.Length > 0)
             {
-                var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(poster.FileName);
+                var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(img.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\cinema_posters", newFileName);
                 using (var stream = System.IO.File.Create(filePath))
                 {
-                    poster.CopyTo(stream);
+                    img.CopyTo(stream);
                 }
                 cinema.Img = newFileName;
             }
 
-            _context.Cinemas.Add(cinema);
-            _context.SaveChanges();
+            //_context.Cinemas.Add(cinema);
+            //_context.SaveChanges();
+            await _cinemaRepository.CreateAsync(cinema);
+            await _cinemaRepository.CommitAsync();  
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
-        public IActionResult Edit([FromRoute] int id)
+        public async Task<IActionResult> Edit([FromRoute] int id)
         {
            
-            var cinema = _context.Cinemas.Find(id);
+            //var cinema = _context.Cinemas.Find(id);
+            var cinema = await _cinemaRepository.GetOneAsync(b => b.Id == id);
             if (cinema is null)
                 return NotFound();
             return View(cinema);
         }
         [HttpPost]
-        public IActionResult Edit(Cinema cinema, IFormFile? poster)
+        public async Task<IActionResult> Edit(Cinema cinema, IFormFile? img
+            )
         {
             ModelState.Remove("Img");
             if (!ModelState.IsValid)
                 return View(cinema);
-            var existingCinema = _context.Cinemas.AsNoTracking().FirstOrDefault(b => b.Id == cinema.Id);
+            //var existingCinema = _context.Cinemas.AsNoTracking().FirstOrDefault(b => b.Id == cinema.Id);
+            var existingCinema = await _cinemaRepository.GetOneAsync(b => b.Id == cinema.Id, tracking: false);
             if (existingCinema is null)
                 return NotFound();
-            if (poster is not null && poster.Length > 0)
+            if (img is not null && img.Length > 0)
             {
-                var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(poster.FileName);
+                var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(img.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\cinema_posters", newFileName);
                 using (var stream = System.IO.File.Create(filePath))
                 {
-                    poster.CopyTo(stream);
+                    img.CopyTo(stream);
                 }
                 var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\cinema_posters", existingCinema.Img);
                 if (System.IO.File.Exists(oldFilePath))
@@ -89,13 +96,16 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             {
                 cinema.Img = existingCinema.Img;
             }
-            _context.Cinemas.Update(cinema);
-            _context.SaveChanges();
+            //_context.Cinemas.Update(cinema);
+            //_context.SaveChanges();
+            _cinemaRepository.Update(cinema);
+            await _cinemaRepository.CommitAsync();
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var cinema = _context.Cinemas.Find(id);
+            //var cinema = _context.Cinemas.Find(id);
+                var cinema = await _cinemaRepository.GetOneAsync(b => b.Id == id);
             if (cinema is null)
                 return NotFound();
             var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\cinema_posters", cinema.Img);
@@ -103,8 +113,11 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             {
                 System.IO.File.Delete(oldFilePath);
             }
-            _context.Cinemas.Remove(cinema);
-            _context.SaveChanges();
+            //_context.Cinemas.Remove(cinema);
+            //_context.SaveChanges();
+                _cinemaRepository.Delete(cinema);
+            await _cinemaRepository.CommitAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -68,13 +68,20 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             });
         }
         [HttpPost]
-        public IActionResult Create(MovieCreateVM movie , IFormFile mainImg, List<IFormFile> subImgs)
+        public IActionResult Create(MovieCreateVM movievm , IFormFile mainImg, List<IFormFile> subImgs)
         {
+
+            ModelState.Remove("MainImg");
+            ModelState.Remove("Movie.MainImg");
+            ModelState.Remove("Movie.Cinema");
+            ModelState.Remove("Movie.Category");
+            ModelState.Remove("Cinemas");
+            ModelState.Remove("Categories");
             if (!ModelState.IsValid)
             { 
-               movie.Categories = _context.Categories.AsNoTracking().AsQueryable();
-               movie.Cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
-                return View(movie);
+               movievm.Categories = _context.Categories.AsNoTracking().AsQueryable();
+               movievm.Cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+                return View(movievm);
             }
 
             if (mainImg is not null && mainImg.Length > 0)
@@ -85,20 +92,20 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                 {
                     mainImg.CopyTo(stream);
                 }
-                movie.MainImg = newFileName;
+                movievm.Movie.MainImg = newFileName;
             }
-            var mv = new Movie
-            {
-                Name = movie.Name,
-                Description = movie.Description,
-                Price = movie.Price,
-                Date = movie.Date,
-                MainImg = movie.MainImg,
-                Status = movie.Status,
-                CategoryId = movie.CategoryId,
-                CinemaId = movie.CinemaId
-            };
-            _context.Movies.Add(mv);
+            //var mv = new Movie
+            //{
+            //    Name = movie.Name,
+            //    Description = movie.Description,
+            //    Price = movie.Price,
+            //    Date = movie.Date,
+            //    MainImg = movie.MainImg,
+            //    Status = movie.Status,
+            //    CategoryId = movie.CategoryId,
+            //    CinemaId = movie.CinemaId
+            //};
+            _context.Movies.Add(movievm.Movie);
             _context.SaveChanges();
             if (subImgs.Any())
             {
@@ -115,7 +122,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
 
                         _context.MovieSubImgs.Add(new()
                         {
-                            MovieId = mv.Id,
+                            MovieId = movievm.Movie.Id,
                             SubImgs = newFileName
                         });
                     }
@@ -127,42 +134,46 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var movie = _context.Movies
-                .Include(m => m.Category)
-                .Include(m => m.Cinema)
-                .FirstOrDefault(m =>m.Id==id);
+            var movie = _context.Movies.Find(id);
             if (movie is null)
                 return NotFound();
-            var productSubImgs = _context.MovieSubImgs.Where(p => p.MovieId == id);
+            var moviesSubImgs = _context.MovieSubImgs.Where(p => p.MovieId == id);
             var categories = _context.Categories.AsNoTracking().AsQueryable();
             var cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
             return View(new MovieUpdateResponseVM
             {
-             Id = movie.Id,
-                Name = movie.Name,
-                Description = movie.Description,
-                Price = movie.Price,
-                Date = movie.Date,
-                Status = movie.Status,
-                MainImg = movie.MainImg,
-                CategoryId = movie.CategoryId,
-                CinemaId = movie.CinemaId,
-                SubImgs = productSubImgs,
+             //Id = movie.Id,
+             //   Name = movie.Name,
+             //   Description = movie.Description,
+             //   Price = movie.Price,
+             //   Date = movie.Date,
+             //   Status = movie.Status,
+             //   MainImg = movie.MainImg,
+             //   CategoryId = movie.CategoryId,
+             //   CinemaId = movie.CinemaId,
+                Movie = movie,
+                SubImgs = moviesSubImgs,
                 Categories = categories,
                 Cinemas = cinemas
             });
         }
         [HttpPost]
-        public IActionResult Edit(MovieUpdateResponseVM movie, IFormFile? mainImg, List<IFormFile>? subImgs)
+        public IActionResult Edit(MovieUpdateResponseVM movievm, IFormFile? mainImg, List<IFormFile>? subImgs)
         {
             ModelState.Remove("MainImg");
-            ModelState.Remove("Movies.Cinema");
-            ModelState.Remove("Movies.Category");
+            ModelState.Remove("Movie.MainImg");
+            ModelState.Remove("Movie.Cinema");
+            ModelState.Remove("Movie.Category");
             ModelState.Remove("Cinemas");
             ModelState.Remove("Categories");
             if (!ModelState.IsValid)
-                return View(movie);
-            var movieInDB = _context.Movies.AsNoTracking().FirstOrDefault(p => p.Id == movie.Id);
+            {
+                movievm.SubImgs = _context.MovieSubImgs.Where(p => p.MovieId == movievm.Movie.Id);
+                movievm.Categories = _context.Categories.AsNoTracking().AsQueryable();
+                movievm.Cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+                return View(movievm);
+            }
+            var movieInDB = _context.Movies.AsNoTracking().FirstOrDefault(p => p.Id == movievm.Movie.Id);
             if (movieInDB is null)
                 return NotFound();
             if (mainImg is not null && mainImg.Length > 0)
@@ -173,34 +184,34 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                 {
                     mainImg.CopyTo(stream);
                 }
-                movie.MainImg = newFileName;
+                movievm.Movie.MainImg = newFileName;
                 var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\movie_images", movieInDB.MainImg);
                 if (System.IO.File.Exists(oldFilePath))
                 {
                     System.IO.File.Delete(oldFilePath);
                 }
-                movie.MainImg = newFileName;
+                movievm.Movie.MainImg = newFileName;
             }
             else
             {
-                movie.MainImg = movieInDB.MainImg;
+                movievm.Movie.MainImg = movieInDB.MainImg;
             }
-            var mv = new Movie
-            {
-                Name = movie.Name,
-                Description = movie.Description,
-                Price = movie.Price,
-                Date = movie.Date,
-                MainImg = movie.MainImg,
-                Status = movie.Status,
-                CategoryId = movie.CategoryId,
-                CinemaId = movie.CinemaId
-            };
-            _context.Movies.Update(mv);
+            //var mv = new Movie
+            //{
+            //    Name = movie.Name,
+            //    Description = movie.Description,
+            //    Price = movie.Price,
+            //    Date = movie.Date,
+            //    MainImg = movie.MainImg,
+            //    Status = movie.Status,
+            //    CategoryId = movie.CategoryId,
+            //    CinemaId = movie.CinemaId
+            //};
+            _context.Movies.Update(movievm.Movie);
             _context.SaveChanges();
             if (subImgs.Any())
             {
-                var oldSubImgs = _context.MovieSubImgs.Where(p => p.MovieId == movie.Id);
+                var oldSubImgs = _context.MovieSubImgs.Where(p => p.MovieId == movievm.Movie.Id);
                 foreach (var img in subImgs)
                 {
                     var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(img.FileName);
@@ -212,7 +223,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
 
                     _context.MovieSubImgs.Add(new()
                     {
-                        MovieId = movie.Id,
+                        MovieId = movievm.Movie.Id,
                         SubImgs = newFileName
                     });
                 }

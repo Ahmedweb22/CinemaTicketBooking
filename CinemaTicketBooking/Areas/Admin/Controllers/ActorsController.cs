@@ -43,14 +43,14 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             });
         }
         [HttpPost]
-        public IActionResult Create(ActorsCreateVM actor, IFormFile img)
+        public IActionResult Create(ActorsCreateVM actorvm, IFormFile img)
         {
             ModelState.Remove("Img");
             ModelState.Remove("Movies");
             if (!ModelState.IsValid)
             {
-                actor.Movies = _context.Movies.AsNoTracking().AsQueryable();
-                return View(actor);
+                actorvm.Movies = _context.Movies.AsNoTracking().AsQueryable();
+                return View(actorvm);
             }
                 var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(img.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\actors_images", newFileName);
@@ -58,15 +58,15 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                 {
                     img.CopyTo(stream);
                 }
-            
-            var actors = new Actors
-            {
-                Name = actor.Name,
-                Description = actor.Description,
-                Img = newFileName,
-                MovieId = actor.MovieId,
-            };
-            _context.Actors.Add(actors);
+                actorvm.Actors.Img = newFileName;
+            //var actors = new Actors
+            //{
+            //    Name = actor.Name,
+            //    Description = actor.Description,
+            //    Img = newFileName,
+            //    MovieId = actor.MovieId,
+            //};
+            _context.Actors.Add(actorvm.Actors);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
@@ -80,7 +80,8 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                 return NotFound();
             return View(new ActorsUpdateREsponseVM
             { 
-Name = actor.Name,
+                Id = actor.Id,
+                Name = actor.Name,
 Description = actor.Description,
 Img = actor.Img,
 MovieId = actor.MovieId,
@@ -98,7 +99,8 @@ MovieId = actor.MovieId,
                 actorVM.Movies = _context.Movies;
                 return View(actorVM);
             }
-            var existingActor = _context.Actors.FirstOrDefault(b => b.Id == actorVM.Id);
+            var existingActor = _context.Actors.AsNoTracking().FirstOrDefault(b => b.Id == actorVM.Id);
+
             if (existingActor is null)
                 return NotFound();
             if (img is not null && img.Length > 0)
@@ -109,21 +111,30 @@ MovieId = actor.MovieId,
                 {
                     img.CopyTo(stream);
                 }
-                if (!string.IsNullOrEmpty(existingActor.Img))
-                {
                     var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\actors_images", existingActor.Img);
                     if (System.IO.File.Exists(oldFilePath))
                     {
                         System.IO.File.Delete(oldFilePath);
                     }
-                }
                 actorVM.Img = newFileName;
             }
-            existingActor.Name = actorVM.Name;
-                existingActor.Description = actorVM.Description;
-                existingActor.MovieId = actorVM.MovieId;
-           
-           // _context.Actors.Update(actors);
+            else
+            {
+                actorVM.Img = existingActor.Img;
+            }
+            //existingActor.Name = actorVM.Name;
+            //    existingActor.Description = actorVM.Description;
+            //    existingActor.MovieId = actorVM.MovieId;
+
+            var actors = new Actors
+            {
+                Id = actorVM.Id,
+                Name = actorVM.Name,
+                Description = actorVM.Description,
+                Img = actorVM.Img,
+                MovieId = actorVM.MovieId,
+            };
+            _context.Actors.Update(actors);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }

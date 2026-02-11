@@ -11,39 +11,38 @@
             <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="Name" class="form-label">Name</label>
-                    <input class="form-control"  placeholder="Enter movie name" asp-for="Name">
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <input class="form-control"  placeholder="Enter movie name" asp-for="Movie.Name">
+                    <span asp-validation-for="Movie.Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Description" class="form-label">Description</label>
-                    <textarea class="form-control" placeholder="Description"rows="5" asp-for="Description"></textarea>
-					<span asp-validation-for="Description" class="text-danger"></span>
+                    <textarea class="form-control" placeholder="Description"rows="5" asp-for="Movie.Description"></textarea>
+					<span asp-validation-for="Movie.Description" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Img" class="form-label">Main Img</label>
-                    <input type="file" class="form-control" placeholder="Enter product Img" asp-for="MainImg">
-				
+                    <input type="file" class="form-control" id="MainImg" placeholder="Enter movie Img" name="mainImg" />
                 </div>
                 <div class="mb-3">
                     <label for="SubImgs" class="form-label">Sub Imgs</label>
-                    <input type="file" class="form-control" placeholder="Enter product Img" name="subImgs" multiple>
+                    <input type="file" class="form-control" id="SubImgs" placeholder="Enter Movies Img" name="SubImgs" multiple>
 					
                 </div>
                 <div class="mb-3">
                     <label for="Price" class="form-label">Price</label>
-                    <input class="form-control"  placeholder="Enter product price" asp-for="Price">
+                    <input class="form-control"  placeholder="Enter product price" asp-for="Movie.Price">
 				
                 </div>
                 <div class="mb-3">
                     <label for="Date" class="form-label">Date</label>
-                    <input asp-for="Date" type="datetime-local" class="form-control" />
+                    <input asp-for="Movie.Date" type="datetime-local" class="form-control" />
 
 
                 </div>
                 <div class="col-md-3">
                     <label for="Category" class="form-label">Category</label>
-                    <select asp-for ="CategoryId" class="form-select">
-						<option value="">-- Select Category --</option>
+                    <select asp-for ="Movie.CategoryId" class="form-select">
+						
                         @foreach (var category in Model.Categories)
                         {
 
@@ -54,8 +53,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="Cinema" class="form-label">Cinema</label>
-                    <select asp-for ="CinemaId" class="form-select">
-						<option value="">-- Select Cinema --</option>
+                    <select asp-for ="Movie.CinemaId" class="form-select">
                         @foreach (var cinema in Model.Cinemas)
                         {
                             <option value="@cinema.Id">@cinema.Name</option>
@@ -65,7 +63,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="Status" class="form-label">Status</label>
-                    <select name="Movies.Status" class="form-select" id="Status">
+                    <select asp-for ="Movie.Status" class="form-select">
                         <option value="true">Active</option>
                         <option value="false">Inactive</option>
                     </select>

@@ -22,25 +22,25 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="Img" class="form-label">Poster </label>
-                    <input type="file" class="form-control" asp-for="Img" placeholder="Enter actor image">
-                    <span asp-validation-for="Img" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="MovieId" class="form-label">Movie</label>
-                    <select class="form-select" asp-for="MovieId">
-                        <option value="">-- Select Movie --</option>
-                        @foreach (var movie in Model.Movies)
-                        {
-                            <option value="@movie.Id">@movie.Name</option>
-                        }
-                    </select>
+                    <label for="Img" class="form-label">Img </label>
+                    <input type="file" class="form-control" name="img" placeholder="Enter actor image">
+                 
                 </div>
                 <div class="mb-3">
                     <img id="preview"
                          src="~/img/actors_images/@Model.Img" alt="Current Image" class="img-thumbnail" />
                 </div>
 
+                <div class="mb-3">
+                    <label for="MovieId" class="form-label">Movie</label>
+                    <select class="form-select" asp-for="MovieId">
+                        @foreach (var movie in Model.Movies)
+                        {
+                            <option value="@movie.Id">@movie.Name</option>
+                        }
+                    </select>
+                </div>
+        
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

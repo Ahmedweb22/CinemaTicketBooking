@@ -9,21 +9,20 @@
     <div class="row my-3">
         <div class="col-12">
             <form method="post" enctype="multipart/form-data">
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Actors.Id" />
                 <div class="mb-3">
                     <label for=Name" class="form-label">Name</label>
-                    <input class="form-control" placeholder="Enter actor name" asp-for="Name">
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <input class="form-control" placeholder="Enter actor name" asp-for="Actors.Name">
+                    <span asp-validation-for="Actors.Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Description" class="form-label">Description</label>
-                    <textarea class="form-control" placeholder="Description" rows="5" asp-for="Description"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <textarea class="form-control" placeholder="Description" rows="5" asp-for="Actors.Description"></textarea>
+                    <span asp-validation-for="Actors.Description" class="text-danger"></span>
                 </div>
                  <div class="mb-3">
                     <label for="MovieId" class="form-label">Movie</label>
-                    <select class="form-select" asp-for="MovieId">
-                        <option value="">-- Select Movie --</option>
+                    <select class="form-select" asp-for="Actors.MovieId">
                         @foreach (var movie in Model.Movies)
                         {
                             <option value="@movie.Id">@movie.Name</option>
@@ -32,8 +31,8 @@
                     </div>
                 <div class="mb-3">
                     <label for="Img" class="form-label">Image</label>
-                    <input type="file" class="form-control" placeholder="Enter actor image" name="img">
-                    <span asp-validation-for="Img" class="text-danger"></span>
+                    <input type="file" class="form-control" id="img" placeholder="Enter actor image" name="img">
+                
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

@@ -8,7 +8,7 @@
 
     <div class="row my-3">
         <div class="col-12">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for=Name" class="form-label">Name</label>
                     <input class="form-control" placeholder="Enter cinema name" asp-for="Name">
@@ -16,8 +16,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="Img" class="form-label">Poster</label>
-                    <input type="file" class="form-control" placeholder="Enter cinema poster" asp-for="Img">
-                    <span asp-validation-for="Img" class="text-danger"></span>
+                    <input type="file" class="form-control" id="img" placeholder="Enter cinema poster" name="img">
                 </div>
                 <div clas="mb-3">
                     <label for="Status" class="form-label">Status</label>
