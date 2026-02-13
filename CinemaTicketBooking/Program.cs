@@ -9,6 +9,12 @@ namespace CinemaTicketBooking
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
+            builder.Services.AddScoped<IRepository<Cinema>, Repository<Cinema>>();
+            builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+            builder.Services.AddScoped<IRepository<Actors>, Repository<Actors>>();
+            builder.Services.AddScoped<IMovieSubImgRepository, MovieSubImgRepository>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -7,7 +7,12 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         //private ApplicationDbContext _context = new();
-        private Repository<Category> _categoryRepository = new();
+        //private Repository<Category> _categoryRepository = new();
+        private IRepository<Category> _categoryRepository;
+        public CategoryController(IRepository<Category> categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
         public async Task<IActionResult> Index(string? name, int page = 1)
         {
             //var categories = _context.Categories.AsNoTracking().AsQueryable();
@@ -20,7 +25,9 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             int pageSize = 10;
             int currentPage = page;
             double totalCount = Math.Ceiling(categories.Count() / (double)pageSize);
-            categories = categories.Skip((page - 1) * pageSize).Take(pageSize).ToList(); ;
+            categories = categories.Skip((page - 1) * pageSize).Take(pageSize).ToList(); 
+
+         
             return View(new CategoriesVM
             {
                 Categories = categories.AsEnumerable(),
@@ -39,11 +46,20 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         {
             ModelState.Remove("Movies");
             if (!ModelState.IsValid)
+            {
+                TempData["error-notification"] = "Invalid Data";
                 return View(category);
+            }
             //_context.Categories.Add(category);
             //_context.SaveChanges();
             await _categoryRepository.CreateAsync(category);
             await _categoryRepository.CommitAsync();
+
+            //Response.Cookies.Append("Notification", "Category created successfully" , new()
+            //{ 
+
+            //});
+            TempData["success-notification"] = "Category created successfully";
 
             return RedirectToAction(nameof(Index));
         }
@@ -61,11 +77,15 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         {
             ModelState.Remove("Movies");
             if (!ModelState.IsValid)
+            {
+                TempData["error-notification"] = "Invalid Data";
                 return View(category);
+            }
             //_context.Categories.Update(category);
             //_context.SaveChanges();
              _categoryRepository.Update(category);
             await _categoryRepository.CommitAsync();
+            TempData["success-notification"] = "Category updated successfully";
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> Delete([FromRoute] int id)
@@ -77,7 +97,8 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             //_context.Categories.Remove(category);
             //_context.SaveChanges();
                 _categoryRepository.Delete(category);
-                _categoryRepository.CommitAsync();
+               await _categoryRepository.CommitAsync();
+            TempData["success-notification"] = "Category Deleted successfully";
             return RedirectToAction(nameof(Index));
         }
     }

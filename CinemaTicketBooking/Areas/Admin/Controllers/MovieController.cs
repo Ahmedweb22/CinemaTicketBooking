@@ -7,37 +7,58 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
     [Area(SD.ADMIN_AREA)]
     public class MovieController : Controller
     {
-        private ApplicationDbContext _context = new();
-        public IActionResult Index(MovieFilterVM filterVM, int page = 1)
+        // private ApplicationDbContext _context = new();
+        //private Repository<Category> _categoryRepository = new();
+        //private Repository<Cinema> _cinemaRepository = new();
+        //private Repository<Movie> _movieRepository = new();
+        //private MovieSubImgRepository _movieSubImgs = new();
+        private IRepository<Movie> _movieRepository;
+        private IRepository<Category> _categoryRepository ;
+        private IRepository<Cinema> _cinemaRepository;
+        private IMovieSubImgRepository _movieSubImgs;
+
+        public MovieController(IRepository<Movie> movieRepository, IRepository<Category> categoryRepository, IRepository<Cinema> cinemaRepository, IMovieSubImgRepository movieSubImgs)
         {
-            var movies = _context.Movies.AsNoTracking().AsQueryable();
-            movies = movies.Include(p => p.Category).Include(p => p.Cinema);
+            _movieRepository = movieRepository;
+            _categoryRepository = categoryRepository;
+            _cinemaRepository = cinemaRepository;
+            _movieSubImgs = movieSubImgs;
+        }
+
+        public async Task<IActionResult> Index(MovieFilterVM filterVM, int page = 1)
+        {
+            //var movies = _context.Movies.AsNoTracking().AsQueryable();
+            var movies = await _movieRepository.GetAsync(includes: [m => m.Category, m => m.Cinema], tracking: false);
+            //movies = movies.Include(p => p.Category).Include(p => p.Cinema);
+
             MovieFilterVM filterVMResponse = new();
-            var categories = _context.Categories.AsNoTracking().AsQueryable();
-            var brands = _context.Cinemas.AsNoTracking().AsQueryable();
+            //var categories = _context.Categories.AsNoTracking().AsQueryable();
+            var categories = await _categoryRepository.GetAsync(tracking: false);
+           // var brands = _context.Cinemas.AsNoTracking().AsQueryable();
+            var brands = await _cinemaRepository.GetAsync(tracking: false);
             if (filterVM.Name is not null)
             {
-                movies = movies.Where(e => e.Name.Contains(filterVM.Name));
+                movies = movies.Where(e => e.Name.Contains(filterVM.Name)).ToList();
                 filterVMResponse.Name = filterVM.Name;
             }
             if (filterVM.MinPrice is not null)
             {
-                movies = movies.Where(e => e.Price >= filterVM.MinPrice);
+                movies = movies.Where(e => e.Price >= filterVM.MinPrice).ToList();
                 filterVMResponse.MinPrice = filterVM.MinPrice;
             }
             if (filterVM.MaxPrice is not null)
             {
-                movies = movies.Where(e => e.Price <= filterVM.MaxPrice);
+                movies = movies.Where(e => e.Price <= filterVM.MaxPrice).ToList();
                 filterVMResponse.MaxPrice = filterVM.MaxPrice;
             }
             if (filterVM.CategoryId is not null)
             {
-                movies = movies.Where(e => e.CategoryId == filterVM.CategoryId);
+                movies = movies.Where(e => e.CategoryId == filterVM.CategoryId).ToList();
                 filterVMResponse.CategoryId = filterVM.CategoryId;
             }
             if (filterVM.CinemaId is not null)
             {
-                movies = movies.Where(e => e.CinemaId == filterVM.CinemaId);
+                movies = movies.Where(e => e.CinemaId == filterVM.CinemaId).ToList();
                 filterVMResponse.CinemaId = filterVM.CinemaId;
             }
             if (page < 1)
@@ -45,7 +66,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             int pageSize = 10;
             int currentPage = page;
             double totalCount = Math.Ceiling(movies.Count() / (double)pageSize);
-            movies = movies.Skip((page - 1) * pageSize).Take(pageSize);
+            movies = movies.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return View(new MoviesVM
             {
                 Movies = movies,
@@ -57,10 +78,12 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             });
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var categories = _context.Categories.AsNoTracking().AsQueryable();
-            var cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+            // var categories = _context.Categories.AsNoTracking().AsQueryable();
+            var categories = await _categoryRepository.GetAsync(tracking: false);
+            //var cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+            var cinemas = await _cinemaRepository.GetAsync(tracking: false);
             return View(new MovieCreateVM
             {
                 Categories = categories.AsEnumerable(),
@@ -68,7 +91,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             });
         }
         [HttpPost]
-        public IActionResult Create(MovieCreateVM movievm , IFormFile mainImg, List<IFormFile> subImgs)
+        public async Task<IActionResult> Create(MovieCreateVM movievm , IFormFile mainImg, List<IFormFile> subImgs)
         {
 
             ModelState.Remove("MainImg");
@@ -78,9 +101,12 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             ModelState.Remove("Cinemas");
             ModelState.Remove("Categories");
             if (!ModelState.IsValid)
-            { 
-               movievm.Categories = _context.Categories.AsNoTracking().AsQueryable();
-               movievm.Cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+            {
+                TempData["error-notification"] = "Invalid Data";
+                // movievm.Categories = _context.Categories.AsNoTracking().AsQueryable();
+                movievm.Categories = await _categoryRepository.GetAsync(tracking: false);  
+               // movievm.Cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+                movievm.Cinemas = await _cinemaRepository.GetAsync(tracking: false); 
                 return View(movievm);
             }
 
@@ -94,19 +120,12 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                 }
                 movievm.Movie.MainImg = newFileName;
             }
-            //var mv = new Movie
-            //{
-            //    Name = movie.Name,
-            //    Description = movie.Description,
-            //    Price = movie.Price,
-            //    Date = movie.Date,
-            //    MainImg = movie.MainImg,
-            //    Status = movie.Status,
-            //    CategoryId = movie.CategoryId,
-            //    CinemaId = movie.CinemaId
-            //};
-            _context.Movies.Add(movievm.Movie);
-            _context.SaveChanges();
+    
+            //_context.Movies.Add(movievm.Movie);
+            //_context.SaveChanges();
+            await _movieRepository.CreateAsync(movievm.Movie);
+            await _movieRepository.CommitAsync();
+
             if (subImgs.Any())
             {
                 foreach (var img in subImgs)
@@ -120,26 +139,37 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                             img.CopyTo(stream);
                         }
 
-                        _context.MovieSubImgs.Add(new()
+                        //_context.MovieSubImgs.Add(new()
+                        //{
+                        //    MovieId = movievm.Movie.Id,
+                        //    SubImgs = newFileName
+                        //});
+                        await _movieSubImgs.CreateAsync(new MovieSubImgs
                         {
                             MovieId = movievm.Movie.Id,
                             SubImgs = newFileName
                         });
                     }
                 }
-                _context.SaveChanges();
+               // _context.SaveChanges();
+                await _movieSubImgs.CommitAsync();
+                TempData["success-notification"] = "Category created successfully";
             }
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var movie = _context.Movies.Find(id);
+            //var movie = _context.Movies.Find(id);
+            var movie = await _movieRepository.GetOneAsync(e => e.Id == id);
             if (movie is null)
                 return NotFound();
-            var moviesSubImgs = _context.MovieSubImgs.Where(p => p.MovieId == id);
-            var categories = _context.Categories.AsNoTracking().AsQueryable();
-            var cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+           // var moviesSubImgs = _context.MovieSubImgs.Where(p => p.MovieId == id);
+            var moviesSubImgs = await _movieSubImgs.GetAsync(e => e.MovieId == id, tracking: false);
+           // var categories = _context.Categories.AsNoTracking().AsQueryable();
+            var categories = await _categoryRepository.GetAsync(tracking: false);
+            //var cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+            var cinemas = await _cinemaRepository.GetAsync(tracking: false);
             return View(new MovieUpdateResponseVM
             {
              //Id = movie.Id,
@@ -158,7 +188,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             });
         }
         [HttpPost]
-        public IActionResult Edit(MovieUpdateResponseVM movievm, IFormFile? mainImg, List<IFormFile>? subImgs)
+        public async Task<IActionResult> Edit(MovieUpdateResponseVM movievm, IFormFile? mainImg, List<IFormFile>? subImgs)
         {
             ModelState.Remove("MainImg");
             ModelState.Remove("Movie.MainImg");
@@ -168,12 +198,17 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             ModelState.Remove("Categories");
             if (!ModelState.IsValid)
             {
-                movievm.SubImgs = _context.MovieSubImgs.Where(p => p.MovieId == movievm.Movie.Id);
-                movievm.Categories = _context.Categories.AsNoTracking().AsQueryable();
-                movievm.Cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+                TempData["error-notification"] = "Invalid Data";
+                //movievm.SubImgs = _context.MovieSubImgs.Where(p => p.MovieId == movievm.Movie.Id);
+                movievm.SubImgs = await _movieSubImgs.GetAsync(e => e.MovieId == movievm.Movie.Id, tracking: false);
+               // movievm.Categories = _context.Categories.AsNoTracking().AsQueryable();
+                movievm.Categories = await _categoryRepository.GetAsync(tracking: false);
+               // movievm.Cinemas = _context.Cinemas.AsNoTracking().AsQueryable();
+                movievm.Cinemas = await _cinemaRepository.GetAsync(tracking: false);
                 return View(movievm);
             }
-            var movieInDB = _context.Movies.AsNoTracking().FirstOrDefault(p => p.Id == movievm.Movie.Id);
+            //var movieInDB = _context.Movies.AsNoTracking().FirstOrDefault(p => p.Id == movievm.Movie.Id);
+                var movieInDB = await _movieRepository.GetOneAsync(p => p.Id == movievm.Movie.Id, tracking: false);
             if (movieInDB is null)
                 return NotFound();
             if (mainImg is not null && mainImg.Length > 0)
@@ -196,22 +231,15 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             {
                 movievm.Movie.MainImg = movieInDB.MainImg;
             }
-            //var mv = new Movie
-            //{
-            //    Name = movie.Name,
-            //    Description = movie.Description,
-            //    Price = movie.Price,
-            //    Date = movie.Date,
-            //    MainImg = movie.MainImg,
-            //    Status = movie.Status,
-            //    CategoryId = movie.CategoryId,
-            //    CinemaId = movie.CinemaId
-            //};
-            _context.Movies.Update(movievm.Movie);
-            _context.SaveChanges();
+           
+            //_context.Movies.Update(movievm.Movie);
+            //_context.SaveChanges();
+             _movieRepository.Update(movievm.Movie);
+                await _movieRepository.CommitAsync();
             if (subImgs.Any())
             {
-                var oldSubImgs = _context.MovieSubImgs.Where(p => p.MovieId == movievm.Movie.Id);
+               // var oldSubImgs = _context.MovieSubImgs.Where(p => p.MovieId == movievm.Movie.Id);
+                var oldSubImgs = await _movieSubImgs.GetAsync(e => e.MovieId == movievm.Movie.Id, tracking: false);
                 foreach (var img in subImgs)
                 {
                     var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(img.FileName);
@@ -221,7 +249,12 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                         img.CopyTo(stream);
                     }
 
-                    _context.MovieSubImgs.Add(new()
+                    //_context.MovieSubImgs.Add(new()
+                    //{
+                    //    MovieId = movievm.Movie.Id,
+                    //    SubImgs = newFileName
+                    //});
+                    await _movieSubImgs.CreateAsync(new MovieSubImgs
                     {
                         MovieId = movievm.Movie.Id,
                         SubImgs = newFileName
@@ -235,28 +268,36 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                         System.IO.File.Delete(oldFilePath);
                     }
                 }
-                _context.MovieSubImgs.RemoveRange(oldSubImgs);
-                _context.SaveChanges();
+                //_context.MovieSubImgs.RemoveRange(oldSubImgs);
+                //_context.SaveChanges();
+                _movieSubImgs.DeleteRange(oldSubImgs);
+                    await _movieSubImgs.CommitAsync();
+                TempData["success-notification"] = "Category updated successfully";
             }
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult DeleteImg([FromRoute] int id, [FromQuery] int productImgId)
+        public async Task<IActionResult> DeleteImg([FromRoute] int id, [FromQuery] int ImgId)
         {
-            var subImg = _context.MovieSubImgs.Find(productImgId);
-            if (subImg is null)
+            // var subImg = _context.MovieSubImgs.Find(productImgId);
+            var movieSubImg = await _movieSubImgs.GetOneAsync(e => e.Id == ImgId);
+            if (movieSubImg is null)
                 return NotFound();
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\movie_images\\sub_images", subImg.SubImgs);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\movie_images\\sub_images", movieSubImg.SubImgs);
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.File.Delete(filePath);
             }
-            _context.MovieSubImgs.Remove(subImg);
-            _context.SaveChanges();
+            //_context.MovieSubImgs.Remove(subImg);
+            //_context.SaveChanges();
+            _movieSubImgs.Delete(movieSubImg);
+            await _movieSubImgs.CommitAsync();
+            TempData["success-notification"] = "Category deleted successfully";
             return RedirectToAction(nameof(Edit), new { id });
         }
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var movie = _context.Movies.Find(id);
+           // var movie = _context.Movies.Find(id);
+            var movie = await _movieRepository.GetOneAsync(e => e.Id == id);
             if (movie is null)
                 return NotFound();
             var mainImgPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\movie_images", movie.MainImg);
@@ -264,7 +305,8 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             {
                 System.IO.File.Delete(mainImgPath);
             }
-            var subImgs = _context.MovieSubImgs.Where(p => p.MovieId == id);
+            //var subImgs = _context.MovieSubImgs.Where(p => p.MovieId == id);
+            var subImgs = await _movieSubImgs.GetAsync(e => e.MovieId == id, tracking: false);
             foreach (var subImg in subImgs)
             {
                 var subImgPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\movie_images\\sub_images", subImg.SubImgs);
@@ -273,9 +315,13 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
                     System.IO.File.Delete(subImgPath);
                 }
             }
-            _context.MovieSubImgs.RemoveRange(subImgs);
-            _context.Movies.Remove(movie);
-            _context.SaveChanges();
+            //_context.MovieSubImgs.RemoveRange(subImgs);
+            //_context.Movies.Remove(movie);
+            //_context.SaveChanges();
+            _movieSubImgs.DeleteRange(subImgs);
+                _movieRepository.Delete(movie);
+            await _movieSubImgs.CommitAsync();
+            TempData["success-notification"] = "Category deleted successfully";
             return RedirectToAction(nameof(Index));
         }
     }

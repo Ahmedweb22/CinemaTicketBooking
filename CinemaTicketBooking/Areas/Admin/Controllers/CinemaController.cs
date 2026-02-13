@@ -6,7 +6,12 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
     public class CinemaController : Controller
     {
         //private ApplicationDbContext _context = new();
-                private Repository<Cinema> _cinemaRepository = new();
+                //private Repository<Cinema> _cinemaRepository = new();
+                private IRepository<Cinema> _cinemaRepository;
+        public CinemaController(IRepository<Cinema> cinemaRepository) 
+        { 
+            _cinemaRepository = cinemaRepository;
+        }
         public async Task<IActionResult> Index(string? name, int page = 1)
         {
 
@@ -38,7 +43,10 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         {
             ModelState.Remove("Img");
             if (!ModelState.IsValid)
+            {
+                TempData["error-notification"] = "Invalid Data";
                 return View(cinema);
+            }
             if (img is not null && img.Length > 0)
             {
                 var newFileName = Guid.NewGuid().ToString() + DateTime.UtcNow.ToString("yyyy-MM-dd") + Path.GetExtension(img.FileName);
@@ -53,7 +61,8 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             //_context.Cinemas.Add(cinema);
             //_context.SaveChanges();
             await _cinemaRepository.CreateAsync(cinema);
-            await _cinemaRepository.CommitAsync();  
+            await _cinemaRepository.CommitAsync();
+            TempData["success-notification"] = "Category created successfully";
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -72,7 +81,10 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         {
             ModelState.Remove("Img");
             if (!ModelState.IsValid)
+            {
+                TempData["error-notification"] = "Invalid Data";
                 return View(cinema);
+            }
             //var existingCinema = _context.Cinemas.AsNoTracking().FirstOrDefault(b => b.Id == cinema.Id);
             var existingCinema = await _cinemaRepository.GetOneAsync(b => b.Id == cinema.Id, tracking: false);
             if (existingCinema is null)
@@ -100,6 +112,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             //_context.SaveChanges();
             _cinemaRepository.Update(cinema);
             await _cinemaRepository.CommitAsync();
+            TempData["success-notification"] = "Category updated successfully";
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> Delete([FromRoute] int id)
@@ -117,7 +130,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             //_context.SaveChanges();
                 _cinemaRepository.Delete(cinema);
             await _cinemaRepository.CommitAsync();
-
+            TempData["success-notification"] = "Category deleted successfully";
             return RedirectToAction(nameof(Index));
         }
 

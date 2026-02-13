@@ -1,5 +1,11 @@
 ﻿@model CategoriesVM
-
+@section Scripts{
+    <partial name="~/Views/Shared/_NotificationPartial.cshtml" />
+}
+<script>
+    toastr.success('@Context.Request.Cookies["Notification"]')
+</script>
+<h1>@Context.Request.Cookies["Notification"] </h1>
 <div class="container">
 
     <div class="row mb-3 align-items-center my-3">

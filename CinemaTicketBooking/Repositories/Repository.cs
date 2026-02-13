@@ -1,8 +1,9 @@
 ﻿using System.Linq.Expressions;
+using CinemaTicketBooking.Repositories.IRepositories;
 
 namespace CinemaTicketBooking.Repositories
 {
-    public class Repository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         private ApplicationDbContext _context = new();
         private DbSet<T> _dbSet;
@@ -22,7 +23,8 @@ namespace CinemaTicketBooking.Repositories
         {
             _dbSet.Remove(entity);
         }
-        public async Task<List<T>> GetAsync(Expression<Func<T, bool>>? expression = null , bool tracking = true)
+        public async Task<List<T>> GetAsync(Expression<Func<T, bool>>? expression = null ,
+            Expression<Func<T, object>>[]? includes = null, bool tracking = true)
         {
            
             var categories = _dbSet.AsQueryable();
@@ -30,16 +32,23 @@ namespace CinemaTicketBooking.Repositories
             {
                 categories = categories.Where(expression);
             }
+            if (includes is not null)
+                {
+                foreach (var includeProperty in includes)
+                {
+                    categories = categories.Include(includeProperty);
+                }
+            }
             if (!tracking)
             {
                 categories = categories.AsNoTracking();
             }
             return await categories.ToListAsync();
         }
-        public async Task<T?> GetOneAsync(Expression<Func<T, bool>>? expression = null, bool tracking = true)
+        public async Task<T?> GetOneAsync(Expression<Func<T, bool>>? expression = null, Expression<Func<T, object>>[]? includes = null, bool tracking = true)
         {
 
-            return (await GetAsync(expression, tracking)).FirstOrDefault();
+            return (await GetAsync(expression, includes, tracking)).FirstOrDefault();
         }
       
         public async Task<int> CommitAsync()
