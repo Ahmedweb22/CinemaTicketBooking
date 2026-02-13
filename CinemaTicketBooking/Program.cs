@@ -1,3 +1,5 @@
+using Microsoft.CodeAnalysis.Options;
+
 namespace CinemaTicketBooking
 {
     public class Program
@@ -8,6 +10,13 @@ namespace CinemaTicketBooking
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(
+               option =>
+               { 
+               option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") );
+               }
+                );
 
             builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
             builder.Services.AddScoped<IRepository<Cinema>, Repository<Cinema>>();
