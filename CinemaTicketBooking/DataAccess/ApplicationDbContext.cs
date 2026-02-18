@@ -1,6 +1,10 @@
-﻿namespace CinemaTicketBooking.DataAccess
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using CinemaTicketBooking.ViewModels;
+
+namespace CinemaTicketBooking.DataAccess
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) 
         {
@@ -12,6 +16,8 @@
         public DbSet<Actors> Actors { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<Statistics> Statistics { get; set; }
+        public DbSet<CinemaTicketBooking.ViewModels.RegisterVM> RegisterVM { get; set; } = default!;
+        public DbSet<CinemaTicketBooking.ViewModels.LoginVM> LoginVM { get; set; } = default!;
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

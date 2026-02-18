@@ -1,4 +1,9 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.CodeAnalysis.Options;
+using Microsoft.Extensions.Options;
 
 namespace CinemaTicketBooking
 {
@@ -18,11 +23,39 @@ namespace CinemaTicketBooking
                }
                 );
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>( options =>
+            {
+                options.User.RequireUniqueEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
+                options.Password.RequiredLength = 8;
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
             builder.Services.AddScoped<IRepository<Cinema>, Repository<Cinema>>();
             builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
             builder.Services.AddScoped<IRepository<Actors>, Repository<Actors>>();
             builder.Services.AddScoped<IMovieSubImgRepository, MovieSubImgRepository>();
+
+            builder.Services.AddTransient<IEmailSender , EmailSender>();
+
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+            const string defaultCulture = "en";
+            var supportedCultures = new[] 
+            {
+            new CultureInfo(defaultCulture),
+            new CultureInfo("ar"),
+            new CultureInfo("es")
+             };
+        builder.Services.Configure<RequestLocalizationOptions>(options =>
+        { 
+           options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+        });
 
             var app = builder.Build();
 
@@ -39,6 +72,8 @@ namespace CinemaTicketBooking
 
             app.UseAuthorization();
 
+            app.UseRequestLocalization
+                (app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",

@@ -1,5 +1,6 @@
 ﻿using CinemaTicketBooking.DataAccess;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace CinemaTicketBooking.Areas.Admin.Controllers
 {
@@ -9,9 +10,11 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
         //private ApplicationDbContext _context = new();
         //private Repository<Category> _categoryRepository = new();
         private IRepository<Category> _categoryRepository;
-        public CategoryController(IRepository<Category> categoryRepository)
+        private readonly IStringLocalizer<LocalizationController> _localizer;
+        public CategoryController(IRepository<Category> categoryRepository, IStringLocalizer<LocalizationController> localizer)
         {
             _categoryRepository = categoryRepository;
+            _localizer = localizer;
         }
         public async Task<IActionResult> Index(string? name, int page = 1)
         {
@@ -59,7 +62,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             //{ 
 
             //});
-            TempData["success-notification"] = "Category created successfully";
+            TempData["success-notification"] = _localizer["CreateCategory"].Value;
 
             return RedirectToAction(nameof(Index));
         }
@@ -85,7 +88,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             //_context.SaveChanges();
              _categoryRepository.Update(category);
             await _categoryRepository.CommitAsync();
-            TempData["success-notification"] = "Category updated successfully";
+            TempData["success-notification"] = _localizer["UpdateCategory"].Value;
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> Delete([FromRoute] int id)
@@ -98,7 +101,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             //_context.SaveChanges();
                 _categoryRepository.Delete(category);
                await _categoryRepository.CommitAsync();
-            TempData["success-notification"] = "Category Deleted successfully";
+            TempData["success-notification"] = _localizer["DeleteCategory"].Value;
             return RedirectToAction(nameof(Index));
         }
     }
