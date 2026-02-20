@@ -7,7 +7,7 @@
     <partial name="~/Views/Shared/_NotificationPartial.cshtml" />
 }
 
-<div class="container">
+<div class="container my-2">
 
 <h1>Login</h1>
 
@@ -39,9 +39,14 @@
     </div>
 </div>
 
+    <div>
+        <a asp-action="Register">Register</a>
+    </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+        <a asp-action="ResendEmailConfirmation">Resend Email Confirmation</a>
 </div>
+<div>
+		<a asp-action="ForgetPassword">Forget Password</a>
 </div>
 
 @section Scripts {

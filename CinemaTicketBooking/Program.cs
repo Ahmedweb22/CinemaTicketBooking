@@ -39,6 +39,8 @@ namespace CinemaTicketBooking
             builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
             builder.Services.AddScoped<IRepository<Actors>, Repository<Actors>>();
             builder.Services.AddScoped<IMovieSubImgRepository, MovieSubImgRepository>();
+            builder.Services.AddScoped<IRepository<ApplicationUserOTP>, Repository<ApplicationUserOTP>>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
             builder.Services.AddTransient<IEmailSender , EmailSender>();
 

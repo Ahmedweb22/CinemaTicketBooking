@@ -16,9 +16,9 @@ namespace CinemaTicketBooking.DataAccess
         public DbSet<Actors> Actors { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<Statistics> Statistics { get; set; }
-        public DbSet<CinemaTicketBooking.ViewModels.RegisterVM> RegisterVM { get; set; } = default!;
-        public DbSet<CinemaTicketBooking.ViewModels.LoginVM> LoginVM { get; set; } = default!;
-
+     public DbSet<ApplicationUserOTP> ApplicationUserOTPs { get; set; }
+        public DbSet<CinemaTicketBooking.ViewModels.ValidateOTPVM> ValidateOTPVM { get; set; } = default!;
+        public DbSet<CinemaTicketBooking.ViewModels.ResetPasswordVM> ResetPasswordVM { get; set; } = default!;
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    base.OnConfiguring(optionsBuilder);
