@@ -1,9 +1,11 @@
 ﻿using System.Numerics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicketBooking.Areas.Admin.Controllers
 {
     [Area(SD.ADMIN_AREA)]
+    [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE},{SD.EMPLOYEE_ROLE}")]
     public class ActorsController : Controller
     {
         //private ApplicationDbContext _context = new();
@@ -83,6 +85,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
 
@@ -104,6 +107,7 @@ MovieId = actor.MovieId,
             });
         }
         [HttpPost]
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(ActorsUpdateREsponseVM actorVM, IFormFile? img)
         {
          
@@ -160,6 +164,7 @@ MovieId = actor.MovieId,
             TempData["success-notification"] = "Category updated successfully";
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             // var actor = _context.Actors.Find(id);

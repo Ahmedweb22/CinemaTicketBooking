@@ -68,6 +68,7 @@ namespace CinemaTicketBooking.Areas.Idintity.Controllers
 
             await _accountService.SendEmailAsync(EmailType.Confirmation, $"<h1>Please confirm your account by clicking <a href=' {confirmationLink}'>here</a>.</h1>", user);
 
+            await _userManager.AddToRoleAsync(user, SD.CUSTOMER_ROLE);
             TempData["success-notification"] = "Registration successful!";
             return RedirectToAction("Login");
         }

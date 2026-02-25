@@ -1,4 +1,5 @@
 using System.Globalization;
+using CinemaTicketBooking.Utilities.DbInitialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
@@ -34,6 +35,12 @@ namespace CinemaTicketBooking
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            });
+
             builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
             builder.Services.AddScoped<IRepository<Cinema>, Repository<Cinema>>();
             builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
@@ -58,6 +65,7 @@ namespace CinemaTicketBooking
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
         });
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
             var app = builder.Build();
 
@@ -76,6 +84,10 @@ namespace CinemaTicketBooking
 
             app.UseRequestLocalization
                 (app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+            var scope = app.Services.CreateScope();
+            var service = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+            service.Initialize();
+
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",

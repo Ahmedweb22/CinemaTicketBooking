@@ -60,20 +60,29 @@
                             <td>
                                 <img src="~/img/actors_images/@item.Img" width="100px" />
                             </td>
-                            <td>
+                         @if (User.IsInRole(SD.SUPER_ADMIN_ROLE) || User.IsInRole(SD.ADMIN_AREA))
+                            {
+                                <td>
 
-                                <!-- Update -->
-                                <a href="/Admin/Actors/Edit/@item.Id"
-                                   class="btn btn-sm btn-outline-warning">
-                                    Edit
-                                </a>
+                                    <!-- Update -->
+                                    <a href="/Admin/Actors/Edit/@item.Id"
+                                       class="btn btn-sm btn-outline-warning">
+                                        Edit
+                                    </a>
 
-                                <!-- Delete -->
-                                <a href="/Admin/Actors/Delete/@item.Id"
-                                   class="btn btn-sm btn-outline-danger">
-                                    Delete
-                                </a>
-                            </td>
+                                    <!-- Delete -->
+                                    <a href="/Admin/Actors/Delete/@item.Id"
+                                       class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    NoActions!!
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

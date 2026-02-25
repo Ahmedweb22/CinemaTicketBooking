@@ -1,10 +1,12 @@
 ﻿using CinemaTicketBooking.DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
 namespace CinemaTicketBooking.Areas.Admin.Controllers
 {
     [Area(SD.ADMIN_AREA)]
+    [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE},{SD.EMPLOYEE_ROLE}")]
     public class CategoryController : Controller
     {
         //private ApplicationDbContext _context = new();
@@ -67,6 +69,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
            // var category = _context.Categories.Find(id);
@@ -76,6 +79,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             return View(category);
         }
         [HttpPost]
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(Category category)
         {
             ModelState.Remove("Movies");
@@ -91,6 +95,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             TempData["success-notification"] = _localizer["UpdateCategory"].Value;
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             //var category = _context.Categories.Find(id);

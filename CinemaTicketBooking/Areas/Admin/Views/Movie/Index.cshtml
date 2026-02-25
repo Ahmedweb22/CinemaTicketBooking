@@ -122,19 +122,29 @@
                                 </td>
                             }
 
-                            <td>
-                                <!-- Update -->
-                                <a href="/Admin/Movie/Edit/@item.Id"
-                                   class="btn btn-sm btn-outline-warning">
-                                    Edit
-                                </a>
+                            @if (User.IsInRole(SD.SUPER_ADMIN_ROLE) || User.IsInRole(SD.ADMIN_AREA))
+                            {
+                                <td>
 
-                                <!-- Delete -->
-                                <a href="/Admin/Movie/Delete/@item.Id"
-                                   class="btn btn-sm btn-outline-danger">
-                                    Delete
-                                </a>
-                            </td>
+                                    <!-- Update -->
+                                    <a href="/Admin/Movie/Edit/@item.Id"
+                                       class="btn btn-sm btn-outline-warning">
+                                        Edit
+                                    </a>
+
+                                    <!-- Delete -->
+                                    <a href="/Admin/Movie/Delete/@item.Id"
+                                       class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    NoActions!!
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

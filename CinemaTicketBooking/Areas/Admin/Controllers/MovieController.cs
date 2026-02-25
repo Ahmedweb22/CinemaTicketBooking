@@ -1,10 +1,12 @@
 ﻿using System.Numerics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketBooking.Areas.Admin.Controllers
 {
     [Area(SD.ADMIN_AREA)]
+    [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE},{SD.EMPLOYEE_ROLE}")]
     public class MovieController : Controller
     {
         // private ApplicationDbContext _context = new();
@@ -158,6 +160,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(int id)
         {
             //var movie = _context.Movies.Find(id);
@@ -188,6 +191,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             });
         }
         [HttpPost]
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(MovieUpdateResponseVM movievm, IFormFile? mainImg, List<IFormFile>? subImgs)
         {
             ModelState.Remove("MainImg");
@@ -294,6 +298,7 @@ namespace CinemaTicketBooking.Areas.Admin.Controllers
             TempData["success-notification"] = "Category deleted successfully";
             return RedirectToAction(nameof(Edit), new { id });
         }
+        [Authorize(Roles = $"{SD.SUPER_ADMIN_ROLE},{SD.ADMIN_ROLE}")]
         public async Task<IActionResult> Delete(int id)
         {
            // var movie = _context.Movies.Find(id);
