@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Options;
+using Stripe;
 
 namespace CinemaTicketBooking
 {
@@ -47,7 +48,10 @@ namespace CinemaTicketBooking
             builder.Services.AddScoped<IRepository<Actors>, Repository<Actors>>();
             builder.Services.AddScoped<IMovieSubImgRepository, MovieSubImgRepository>();
             builder.Services.AddScoped<IRepository<ApplicationUserOTP>, Repository<ApplicationUserOTP>>();
+            builder.Services.AddScoped <IRepository<Cart>, Repository<Cart>>();
+            builder.Services.AddScoped<IRepository<Promotion>, Repository<Promotion>>();
             builder.Services.AddScoped<IAccountService, AccountService>();
+     
 
             builder.Services.AddTransient<IEmailSender , EmailSender>();
 
@@ -66,6 +70,9 @@ namespace CinemaTicketBooking
             options.SupportedUICultures = supportedCultures;
         });
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
             var app = builder.Build();
 

@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Cart>
+@section Scripts {
+    <partial name="~/Views/Shared/_NotificationPartial.cshtml" />
+
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="row justify-content-between">
+            <div class="col-md-auto">
+                <h5 class="mb-3 mb-md-0">Shopping Cart (7 Items)</h5>
+            </div>
+            <div class="col-md-auto"><a class="btn btn-sm btn-outline-secondary border-300 me-2 shadow-none" href="../../app/e-commerce/product/product-list.html"> <span class="fas fa-chevron-left me-1" data-fa-transform="shrink-4"></span>Continue Shopping</a><a class="btn btn-sm btn-primary" href="../../app/e-commerce/checkout.html">Checkout</a></div>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="row gx-x1 mx-0 bg-200 text-900 fs-10 fw-semi-bold">
+            <div class="col-9 col-md-8 py-2 px-x1">Name</div>
+            <div class="col-3 col-md-4 px-x1">
+                <div class="row">
+                  
+                    <div class="col-12 col-md-4 text-end py-2">Price</div>
+                </div>
+            </div>
+        </div>
+        @foreach (var item in Model)
+        {
+            <div class="row gx-x1 mx-0 align-items-center border-bottom border-200">
+                <div class="col-8 py-3 px-x1">
+                    <div class="d-flex align-items-center">
+                        <a href="../../app/e-commerce/product/product-details.html"><img class="img-fluid rounded-1 me-3 d-none d-md-block" src="~/img/movie_images/@item.Movie.MainImg" alt="" width="60" /></a>
+                        <div class="flex-1">
+                            <h5 class="fs-9"><a class="text-900" href="../../app/e-commerce/product/product-details.html">@item.Movie.Name</a></h5>
+                            <div class="fs-11 fs-md--1"><a class="text-danger" href="/Customer/Cart/Delete?movieId=@item.MovieId">Remove</a></div>
+                        </div>
+                    </div>
+                </div>
+                @if (item.Movie.Price != item.ListPrice)
+                {
+                    <div class="col-4 py-3 px-x1">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600 text-decoration-line-through">@item.Movie.Price.ToString("c")</div>
+                        </div>
+                    </div>
+                    <div class="col-4 py-3 px-x1">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">@item.ListPrice.ToString("c")</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                <div class="col-4 py-3 px-x1">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">@item.Movie.Price.ToString("c")</div>
+                    </div>
+                </div>
+                }
+            </div>
+
+        }
+    
+        <div class="row fw-bold gx-x1 mx-0">
+            <div class="col-9 col-md-8 py-2 px-x1 text-end text-900">Total</div>
+            <div class="col px-0">
+                <div class="row gx-x1 mx-0">
+                    <div class="col-md-8 py-2 px-x1 d-none d-md-block text-center">7 (items)</div>
+                    <div class="col-12 col-md-4 text-end text-nowrap py-2 px-x1 px-md-3 px-lg-x1">$8516</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer bg-body-tertiary d-flex justify-content-end">
+        <form  class="me-3">
+            <div class="input-group input-group-sm">
+                <input class="form-control" type="text" name="code" placeholder="Promocode" />
+                <button class="btn btn-outline-secondary border-300 btn-sm shadow-none" type="submit">Apply</button>
+            </div>
+        </form><a class="btn btn-sm btn-primary" href="/Customer/Cart/Pay">Proceed to pay</a>
+    </div>
+</div>

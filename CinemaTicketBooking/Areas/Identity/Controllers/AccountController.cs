@@ -4,7 +4,7 @@ using Mapster;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Security.Cryptography;
 
-namespace CinemaTicketBooking.Areas.Idintity.Controllers
+namespace CinemaTicketBooking.Areas.Identity.Controllers
 {
     [Area(SD.IDENTITY_AREA)]
     public class AccountController : Controller
