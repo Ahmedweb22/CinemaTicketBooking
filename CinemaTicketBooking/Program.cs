@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Options;
 using Stripe;
+using AccountService = CinemaTicketBooking.Services.AccountService;
 
 namespace CinemaTicketBooking
 {

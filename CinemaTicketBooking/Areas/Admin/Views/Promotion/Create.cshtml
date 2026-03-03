@@ -1,0 +1,59 @@
+﻿@model CreatePromotionVM
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-md-6">
+            <h3 class="display-6">Create new Actor</h3>
+        </div>
+    </div>
+
+    <div class="row my-3">
+        <div class="col-12">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Promotion.Id" />
+                <div class="mb-3">
+                    <label for="Code" class="form-label">Name</label>
+                    <input class="form-control" placeholder="Enter promotion name" asp-for="Promotion.Code">
+                    <span asp-validation-for="Promotion.Code" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Discount" class="form-label">Discount</label>
+                    <input class="form-control" placeholder="Enter promotion discount" asp-for="Promotion.Discount">
+                    <span asp-validation-for="Promotion.Discount" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="ExpiredAt" class="form-label">Expired At Date</label>
+                    <input asp-for="Promotion.ExpiredAt" type="datetime-local" class="form-control" />
+
+
+                </div>
+                <div class="mb-3">
+                    <label for="MovieId" class="form-label">Movie</label>
+                    <select class="form-select" asp-for="Promotion.MovieId">
+                          <option value="">--Movie--</option>
+                        @foreach (var movie in Model.Movies ?? Enumerable.Empty<Movie>())
+                        {
+                            <option value="@movie.Id">@movie.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="ApplicationUserId" class="form-label">User</label>
+                    <select class="form-select" asp-for="Promotion.ApplicationUserId">
+						<option value="">--User--</option>
+                        @foreach (var user in Model.Users ?? Enumerable.Empty<ApplicationUser>())
+                        {
+                            <option value="@user.Id">@user.UserName</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="~/Views/Shared/_NotificationPartial.cshtml" />
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}
+
