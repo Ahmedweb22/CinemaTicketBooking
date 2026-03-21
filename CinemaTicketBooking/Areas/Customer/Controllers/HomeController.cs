@@ -23,14 +23,15 @@ namespace CinemaTicketBooking.Areas.Customer.Controllers
             _actorRepository = actorRepository;
         }
 
-        public async Task<IActionResult> Index(int? categoryId , int? cinemaId)
+        public async Task<IActionResult> Index(int? categoryId , int? cinemaId , string? name)
         {
        
              var movies = await _movieRepository.GetAsync(m => m.Price >= 300,
                  includes: [m => m.Category, m => m.Cinema, m => m.Actors]);
-
-           // movies = movies.Where(m => m.Price <= 300).ToList();
-           if (categoryId != null)
+            if (name != null)
+            movies = movies.Where(e => e.Name.Contains(name)).ToList();
+            // movies = movies.Where(m => m.Price <= 300).ToList();
+            if (categoryId != null)
             {
                 movies = movies.Where(m => m.CategoryId == categoryId).ToList();
             }

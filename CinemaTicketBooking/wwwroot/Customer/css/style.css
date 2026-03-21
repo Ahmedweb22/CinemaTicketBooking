@@ -445,6 +445,9 @@
 
 
 /*** Footer Start ***/
+footer {
+    position: relative;
+}
 .footer .footer-item .btn-link {
     line-height: 35px;
     color: rgba(255, 255, 255, .5);
@@ -459,4 +462,12 @@
     line-height: 35px;
 }
 /*** Footer End ***/
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+main {
+    flex: 1;
+}
 

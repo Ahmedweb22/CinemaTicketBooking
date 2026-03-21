@@ -24,20 +24,22 @@
             <div class="col-md-12 col-lg-7">
                 <h4 class="mb-3 text-secondary">Book Your Cinema Ticket</h4>                        <h1 class="mb-5 display-3 text-primary">Watch The Latest Movies</h1>
                 <div class="position-relative mx-auto">
-                    <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
+                    <form method="get">
+                    <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="text" name="name" placeholder="Search">
                     <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
+                    </form>
                 </div>
             </div>
             <div class="col-md-12 col-lg-5">
                 <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item active rounded">
-                            <img src="img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
+                            <img src="~/Customer//img/m1.jpeg" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
+                            <a href="#" class="btn px-4 py-2 text-white rounded">Movies</a>
                         </div>
                         <div class="carousel-item rounded">
-                            <img src="img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
+                            <img src="~/Customer/img/m2.jpeg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                            <a href="#" class="btn px-4 py-2 text-white rounded">Movies</a>
                         </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
@@ -143,7 +145,7 @@
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     <div class="row g-4">
                         <div class="col-lg-12">
-                            <div class="row g-4">
+                            <div class="row g-4" id="movies">
                                 @foreach (var item in Model.Movies)
                                 {
                                     
@@ -158,7 +160,7 @@
                                             <p>@item.Description</p>
                                             <div class="d-flex justify-content-between flex-lg-wrap">
                                                 <p class="text-dark fs-5 fw-bold mb-0">$@item.Price Ticket</p>
-                                                <a href="/Customer/Cart" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Book Ticket</a>
+                                                <a asp-controller="Cart"  asp-action="AddToCart" asp-route-movieId="@item.Id" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Book Ticket</a>
                                             </div>
                                         </div>
                                     </div>
@@ -678,3 +680,9 @@
     </div>
 </div>
 <!-- Fact Start -->
+<script>
+    const params = new URLSearchParams(window.location.search);
+if (params.has("name")){
+    document.getElementById("movies").scrollIntoView();
+}
+</script>

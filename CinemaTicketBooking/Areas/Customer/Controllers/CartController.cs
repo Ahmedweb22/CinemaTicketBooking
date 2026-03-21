@@ -23,7 +23,7 @@ namespace CinemaTicketBooking.Areas.Customer.Controllers
         public async Task<IActionResult> AddToCart(int movieId)
         {
             var user= await _userManager.GetUserAsync(User);
-            var movie = await _movieRepo.GetOneAsync(m => m.Id == movieId);
+            var movie = await _movieRepo.GetOneAsync(m => m.Id == movieId); 
             if (user == null || movie == null) return NotFound();
             await _cartRepo.CreateAsync(new Cart
             {
@@ -89,8 +89,8 @@ namespace CinemaTicketBooking.Areas.Customer.Controllers
                 },
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
-                SuccessUrl = Url.Action($"{Request.Scheme}://{Request.Host}/Customer/Checkout/success"),
-                CancelUrl = Url.Action($"{Request.Scheme}://{Request.Host}/Customer/Checkout/cancel"),
+                SuccessUrl = $"{Request.Scheme}://{Request.Host}/Customer/Checkout/success",
+                CancelUrl = $"{Request.Scheme}://{Request.Host}/Customer/Checkout/cancel",
             };
          
             var carts = await _cartRepo.GetAsync(c => c.ApplicationUserId == user.Id, includes: [c => c.Movie]);
@@ -110,13 +110,14 @@ namespace CinemaTicketBooking.Areas.Customer.Controllers
                         },
                         UnitAmount = (long)(cart.ListPrice * 100), // Convert to cents
                     },
+                    Quantity = 1
                 });
             }
            
             
             var service = new SessionService();
             var session = service.Create(options);
-            return Ok(new { sessionId = session.Id });
+            return Redirect(session.Url);
         }
     }
 }
